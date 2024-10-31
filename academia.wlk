@@ -55,6 +55,10 @@ class Mueble {
 		return inventario.min({cosa => cosa.utilidad()})
 	}
 
+	method sacar(cosa) {
+		inventario.remove(cosa)
+	}
+
 	method precio()
 	method puedeGuardar(cosa)
 }
@@ -180,12 +184,16 @@ class Academia {
 	}
 
 	method validarCantidadDeMuebles() {
-		if(!muebles.size() >= 3) {
+		if(!(muebles.size() >= 3)) {
 			self.error("No se pueden sacar las cosas")
 		}
 	}
 
 	method sacarCosas() {
-		// terminarr
+		self.cosasMenosUtilesNoMagicas().forEach({cosa => self.enQueMuebleEsta(cosa).sacar(cosa)})
+	}
+
+	method cosasMenosUtilesNoMagicas() {
+		return self.cosasMenosUtiles().filter({cosa => !cosa.esMagico()})
 	}
 }
